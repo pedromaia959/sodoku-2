@@ -1,0 +1,92 @@
+#include <stdio.h>
+#define TAM 9
+
+void zerador(int *xzao) 
+{
+    int i;
+    for (i = 0; i < TAM; i++)
+        xzao[i] = 0;
+}
+
+int val(int v[TAM][TAM], int fzao, int *xzao) 
+{
+    int i, j;
+    for (i = 0; i < TAM; i++) 
+    {
+        for (j = 0; j < TAM; j++) 
+        {
+            if (fzao) 
+            {
+                xzao[v[i][j]]++;
+                if (xzao[v[i][j]] > 1)
+                return 1;
+            }
+            else 
+            {
+                xzao[v[j][i]]++;
+                if (xzao[v[j][i]] > 1)
+                return 1;
+            }
+        }
+	zerador(xzao);
+    }
+    
+return 0;
+}
+
+int valsmatriz(int v[TAM][TAM], int linicial, int lfinal, int iinicial, int ifinal, int *xzao) 
+{
+    int i, j;
+    for (i = linicial; i < lfinal; i++) 
+    {
+        for (j = iinicial; j < ifinal; j++) 
+        {
+    	    xzao[v[j][i]]++;
+    	    if (xzao[v[j][i]] > 1)
+    		return 1;
+	    }
+    }
+    zerador(xzao);
+
+return 0;
+}
+
+int main() 
+{
+    int n, ma[TAM][TAM], inv, digitos[TAM], casos, i, j;
+    scanf("%i", &n);
+
+    for (casos = 1; casos <= n; casos++) 
+    {
+        for (i = 0; i < TAM; i++) 
+        {
+	    zerador(digitos);
+    	    for (j = 0; j < TAM; j++) 
+    	    {
+    		scanf("%i", &ma[i][j]);
+    		ma[i][j]--;
+    	    }
+	    }
+    	inv = val(ma, 1, digitos) + val(ma, 0, digitos);
+    
+    	for (i = 0; i < TAM; i+=3)
+    	{
+            for (j = 0; j < TAM; j+=3)
+            {
+        	    inv += valsmatriz(ma, i, i + 3, j, j + 3, digitos);
+            }
+    	}
+    	printf("Instancia %i\n", casos);
+    
+    	if (inv)
+    	{
+    	    printf("NAO\n\n");
+    	}
+    	else
+    	{
+    	    printf("SIM\n\n");
+        }
+    }
+
+return 0;
+}
